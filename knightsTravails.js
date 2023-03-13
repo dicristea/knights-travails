@@ -9,29 +9,68 @@ const knightOffsets = [
   [-2, -1],
 ];
 
-const knightMoves = (startCoords, endCoords) => {
-  let squareCoords = [];
-
-  squareCoords.push(startCoords);
-
-  if (JSON.stringify(endCoords) === JSON.stringify(startCoords)) {
-    // cannot use this method for legitamate array comparison
-    // correct way would be to loop through each array item and compare
-    return "Already there!";
-  }
-
-  let newCoords = knightOffsets
-    .map((Offset) => {
-      let x = startCoords[0] + Offset[0];
-      let y = startCoords[1] + Offset[1];
-      if (x > 0 && x < 8 && y > 0 && y < 8) {
-        return [x, y];
+let nextNodes = (node) =>
+  knightOffsets
+    .map((offset) => {
+      const x = node.currentCoord[0] + offset[0];
+      const y = node.currentCoord[1] + offset[1];
+      if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+        return {
+          previousNode: node,
+          currentCoord: [x, y],
+        };
       }
     })
-    .filter((x) => x !== undefined);
+    .filter((x) => x);
 
-  console.log(newCoords);
+let buildPath = (node) => {
+  const nodes = [];
+
+  while (node.previousNode !== null) {
+    nodes.push(node.currentCoord);
+    node = node.previousNode;
+  }
+
+  nodes.push(node.currentCoord);
+
+  return nodes.reverse();
 };
 
-// array to store possible coords (x > 0 && x < 8 && y > 0 && y < 8)
-console.log(knightMoves([3, 3], [1, 2]));
+const knightMoves = (startCoords, endCoords) => {
+  const start = JSON.stringify(startCoords);
+  const end = JSON.stringify(endCoords);
+
+  if (end === start) {
+    return startCoords;
+  }
+
+  let queue = [
+    {
+      previousNode: null,
+      currentCoord: startCoords,
+    },
+  ];
+
+  for (let i = 0; i < queue.length; i++) {
+    const node = queue.shift();
+    const { previousNode, currentCoord } = node; // deconstructing
+    const coordJSON = JSON.stringify(currentCoord);
+
+    if (coordJSON === end) {
+      const path = buildPath(node);
+      return path;
+    } else {
+      const children = nextNodes(node);
+      queue = [...queue, ...children];
+    }
+  }
+};
+const path = knightMoves([0, 0], [6, 7]);
+
+console.log(path);
+
+console.log(
+  `You've made it in ${path.length - 1} moves! Here's your path: ${path.map(
+    (item) => ` [${item}]`
+  )}`
+);
