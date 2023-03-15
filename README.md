@@ -11,5 +11,5 @@ Utilize graph data structures and appropriate search algorithms to create the sh
 
 - Should use a more legitamate approach to the input array comparison than JSON.stringify. Used here for testing purposes only. Correct way would be to loop through each array's items.
 
-- Set() is a standard built-in object in Javascript that can remove duplicate elements from an array.
+- Set() is a standard built-in object in Javascript that can remove duplicate elements from an array. Using Set to make algorithm slightly more time efficient. When looking for the shortest path for a knight, we can exclude coordinates that the algorith has "seen" before.
   - See <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set#remove_duplicate_elements_from_the_array"> Set Mozilla docs</a>

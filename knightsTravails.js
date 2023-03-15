@@ -51,21 +51,27 @@ const knightMoves = (startCoords, endCoords) => {
     },
   ];
 
-  for (let i = 0; i < queue.length; i++) {
+  const seenCoordinates = new Set();
+
+  while (queue) {
     const node = queue.shift();
     const { previousNode, currentCoord } = node; // deconstructing
     const coordJSON = JSON.stringify(currentCoord);
 
-    if (coordJSON === end) {
-      const path = buildPath(node);
-      return path;
-    } else {
-      const children = nextNodes(node);
-      queue = [...queue, ...children];
+    if (!seenCoordinates.has(coordJSON)) {
+      seenCoordinates.add(coordJSON);
+
+      if (coordJSON === end) {
+        return buildPath(node);
+      } else {
+        const children = nextNodes(node);
+        queue = [...queue, ...children];
+      }
     }
   }
 };
-const path = knightMoves([0, 0], [6, 7]);
+
+const path = knightMoves([0, 0], [7, 7]);
 
 console.log(path);
 
