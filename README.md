@@ -2,7 +2,7 @@
 
 This code is a solution using the console to The Odin Project's <a href="https://www.theodinproject.com/lessons/javascript-knights-travails">Knights Travails Project</a>.
 
-## FOCUS
+## Focus
 
 Utilize graph data structures and appropriate search algorithms to create the shortest path for moving a knight piece on a chessboard.
 
